@@ -1,5 +1,5 @@
 "use client";
-import { Children, cloneElement, isValidElement, useState } from "react";
+import { useState } from "react";
 
 import {
   FieldErrors,
@@ -23,11 +23,9 @@ const FormProgress = ({
   }) => JSX.Element)[];
   formSchemaArray: ZodSchema<any>[];
 }) => {
-  const [childrenArrDisplayIndex, setChildrenArrDisplayIndex] = useState(0);
-  const childrenArr = forms;
-  const numberOfForms = childrenArr.length;
-
-  const ChildToRender = childrenArr[childrenArrDisplayIndex];
+  const [formArrayIndex, setFormArrayIndex] = useState(0);
+  const numberOfForms = forms.length;
+  const FormToRender = forms[formArrayIndex];
 
   const [totalFormData, setTotalFormData] = useState({});
 
@@ -38,7 +36,7 @@ const FormProgress = ({
     trigger,
     getValues,
   } = useForm({
-    resolver: zodResolver(formSchemaArray[childrenArrDisplayIndex]),
+    resolver: zodResolver(formSchemaArray[formArrayIndex]),
   });
 
   return (
@@ -49,8 +47,8 @@ const FormProgress = ({
         const isFormValid = await trigger();
         console.log("Partial form data :", getValues());
         if (isFormValid) {
-          if (childrenArrDisplayIndex < numberOfForms - 1) {
-            setChildrenArrDisplayIndex((prev) => prev + 1);
+          if (formArrayIndex < numberOfForms - 1) {
+            setFormArrayIndex((prev) => prev + 1);
           }
           setTotalFormData((prev) => ({
             ...prev,
@@ -63,15 +61,15 @@ const FormProgress = ({
     >
       <div
         style={{
-          width: `${((childrenArrDisplayIndex + 1) / numberOfForms) * 100}%`,
+          width: `${((formArrayIndex + 1) / numberOfForms) * 100}%`,
         }}
         className={` h-2 transition-all bg-amber-500`}
       />
 
       <div>Total number of forms being passed : {numberOfForms}</div>
 
-      <ChildToRender register={register} errors={errors} />
-      {childrenArrDisplayIndex < numberOfForms - 1 ? (
+      <FormToRender register={register} errors={errors} />
+      {formArrayIndex < numberOfForms - 1 ? (
         <button>Next</button>
       ) : (
         <button>Submit</button>
