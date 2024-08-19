@@ -8,7 +8,7 @@ import {
   UseFormRegister,
 } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ZodSchema } from "zod";
+import { ZodObject, ZodRawShape } from "zod";
 
 const FormProgress = ({
   forms,
@@ -21,7 +21,7 @@ const FormProgress = ({
     register: UseFormRegister<FieldValues>;
     errors: FieldErrors<FieldValues>;
   }) => JSX.Element)[];
-  formSchemaArray: ZodSchema<any>[];
+  formSchemaArray: ZodObject<ZodRawShape>[];
 }) => {
   const [formArrayIndex, setFormArrayIndex] = useState(0);
   const numberOfForms = forms.length;

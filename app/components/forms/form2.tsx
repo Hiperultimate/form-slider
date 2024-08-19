@@ -8,7 +8,7 @@ import type {
 import { z } from "zod";
 
 export const form2Schema = z.object({
-  age: z.string().min(16),
+  age: z.string().min(5),
 });
 
 const Form2 = ({
@@ -19,19 +19,6 @@ const Form2 = ({
   errors: FieldErrors<FieldValues>;
 }) => {
   return (
-    // <form
-    //   onSubmit={async (e) => {
-    //     e.preventDefault();
-    //     const isFormValid = await trigger();
-    //     console.log(
-    //       "Errors in form :",
-    //       errors,
-    //       Object.keys(errors).length,
-    //       isFormValid
-    //     );
-    //     remoteTriggerFn(getValues(), isFormValid);
-    //   }}
-    // >
     <>
       Enter your age :
       <input className="text-black" type="number" {...register("age")} />
