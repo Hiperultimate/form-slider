@@ -1,36 +1,70 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Multi Form Slider Hook
 
-## Getting Started
+## Overview
 
-First, run the development server:
+This project provides a custom hook for creating a multi-form slider in React. It simplifies form handling by utilizing `react-hook-form` for form state management and validation, and `zod` for schema validation. The hook streamlines the process of managing multiple forms, handling form errors, and maintaining state across different steps in the slider.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## How to Use
+
+Follow these steps to implement a multi-form slider using the provided hook. You can find an example implementation in `app/components/hook-form/HookForm.tsx`.
+
+### Step 1: Create Form Components
+
+First, create your form components, each accepting `register` and `errors` as props. These props will be used to register form fields and display validation errors.
+
+```jsx
+const Form1 = ({
+  register,
+  errors,
+}: {
+  register: UseFormRegister<FieldValues>;
+  errors: FieldErrors<FieldValues>;
+}) => (
+  <div>
+    <input className="text-black" type="text" {...register("username")} />
+    {errors.username?.message && (
+      <p className="text-red-400">
+        {errors.username?.message.toString()}
+      </p>
+    )}
+  </div>
+);
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Step 2: Define Forms and Schemas
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+In the component where your form slider will be implemented, create two arrays:
+- `formList`: An array of form components.
+- `schemaList`: An array of `zod` schemas corresponding to each form.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+```jsx
+const formList = [Form1, Form2];
+const schemaList: ZodObject<ZodRawShape>[] = [form1Schema, form2Schema];
+```
 
-## Learn More
+> **Note:** The `formList` array should directly reference your form components.
 
-To learn more about Next.js, take a look at the following resources:
+### Step 3: Use the `useMultistepForm` Hook
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Finally, pass the `formList` and `schemaList` arrays to the `useMultistepForm` hook. This will give you access to various utilities for navigating and managing the form slider.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+```jsx
+const {
+  CurrentFormComponent,
+  currentFormIndex,
+  next,
+  back,
+  currentStep,
+  totalStep,
+  formData,
+  verifyFinalForm,
+  register,
+  errors,
+} = useMultistepForm({ forms: formList, formsSchema: schemaList });
+```
 
-## Deploy on Vercel
+With these utilities, you can easily control the navigation between forms, handle form submission, and validate the forms step by step.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Full Implementation
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+For the complete implementation of this custom hook, refer to `app/components/hook-form/HookForm.tsx`.
