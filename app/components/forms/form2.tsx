@@ -9,6 +9,7 @@ import { z } from "zod";
 
 export const form2Schema = z.object({
   age: z.string().min(5),
+  address: z.string().min(10),
 });
 
 const Form2 = ({
@@ -19,11 +20,18 @@ const Form2 = ({
   errors: FieldErrors<FieldValues>;
 }) => {
   return (
-    <>
-      Enter your age :
-      <input className="text-black" type="number" {...register("age")} />
-      {errors.age?.message && <p>{errors.age?.message.toString()}</p>}
-    </>
+    <div className="flex flex-col gap-2 mx-1">
+      
+        <div>Enter your age :</div>
+        <input className="text-black" type="number" {...register("age")} />
+        {errors.age?.message && <p className="text-red-400">{errors.age?.message.toString()}</p>}
+      
+      
+        <div>Enter your address :</div>
+        <input className="text-black" {...register("address")} />
+        {errors.address?.message && <p className="text-red-400">{errors.address?.message.toString()}</p>}
+      
+    </div>
   );
 };
 

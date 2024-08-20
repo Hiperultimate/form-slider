@@ -43,7 +43,7 @@ export const useMultistepForm = ({
     if (!isFormValid) {
       console.log("Error occured. Form is not valid.");
       return;
-    }
+    } 
     setTotalFormData((prev) => ({ ...prev, ...getValues() }));
     if (currentFormIndex < totalFormCount - 1) {
       setCurrentFormIndex((prev) => prev + 1);
@@ -77,6 +77,7 @@ export const useMultistepForm = ({
     totalStep: totalFormCount,
     formData: totalFormData,
     verifyFinalForm,
+    CurrentFormComponent : forms[currentFormIndex],
 
     register,
     // handleSubmit, // This Fn does not work with the current implementation

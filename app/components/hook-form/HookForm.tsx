@@ -10,6 +10,7 @@ export const HookFormImplementation = () => {
   const schemaList: ZodObject<ZodRawShape>[] = [form1Schema, form2Schema];
 
   const {
+    CurrentFormComponent,
     currentFormIndex,
     next,
     back,
@@ -20,8 +21,6 @@ export const HookFormImplementation = () => {
     register,
     errors,
   } = useMultistepForm({ forms: formList, formsSchema: schemaList });
-
-  const DisplayForm = formList[currentFormIndex];
 
   const submitHandler = () => {
     console.log("Total form data: ", formData);
@@ -47,7 +46,7 @@ export const HookFormImplementation = () => {
       </div>
 
       <div>
-        <DisplayForm register={register} errors={errors} />
+        <CurrentFormComponent register={register} errors={errors} />
       </div>
 
       {currentFormIndex < totalStep - 1 ? (
